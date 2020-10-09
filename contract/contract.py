@@ -10,7 +10,7 @@ class Contract:
     Args:
     - template Union[Template, List[Template], Dict[str, Template]]:
         Template object or list of Templates or dict of Templates
-        
+
     Raises:
     - ValueError if template is not valid
 

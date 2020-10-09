@@ -105,7 +105,7 @@ class Template():
     def check(self, value: Any):
         """
         Check if value is valid by template
-        
+
         Raises:
             ValueError if template is not set
             trafaret.DataError if value is not valid

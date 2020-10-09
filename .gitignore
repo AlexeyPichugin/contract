@@ -8,3 +8,4 @@ dist/
 .coverage
 *env
 .vscode
+coverage.xml
