@@ -144,14 +144,6 @@ class Contract:
 
         Raises:
             ValueError if data is not valid
-
-        >>> from contract import Contract, Template
-        >>> import trafaret as t
-        >>> contract = Contract(Template(t.Int()))
-        >>> print(contract(42))
-        42
-        >>> print(contract('test'))
-        ValueError: invalid literal for int() with base 10: 'test'
         """
         try:
             result = self._check(self.template, data)

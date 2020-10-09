@@ -1,4 +1,10 @@
 # Contract
+[![Travis](https://img.shields.io/travis/numpy/numpy/master.svg?label=Travis%20CI)](
+    https://travis-ci.org/github/AlexeyPichugin/contract)
+[![codecov](https://codecov.io/gh/numpy/numpy/branch/master/graph/badge.svg)](
+    https://codecov.io/gh/AlexeyPichugin/contract)
+[![Documentation Status](https://readthedocs.org/projects/contract/badge/?version=latest)](https://contract.readthedocs.io/en/latest/?badge=latest)
+
 Validate and genereate pythpon objects from templates. 
 Library is powered by [Trafaret](https://github.com/Deepwalker/trafaret) and helps to validate and genereate data from template.
 ## Usage
