@@ -1,6 +1,6 @@
 from typing import Any, Union, List, Dict
 from trafaret import DataError
-from contract.template import Template
+from pycont.template import Template
 
 
 class Contract:
@@ -15,7 +15,7 @@ class Contract:
     - ValueError if template is not valid
 
     Simple value validation and generate
-        >>> from contract import Contract, Template
+        >>> from pycont import Contract, Template
         >>> import trafaret as t
         >>> contract = Contract(Template(t.Int()))
         >>> print(contract(42))

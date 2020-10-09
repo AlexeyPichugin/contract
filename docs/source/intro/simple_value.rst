@@ -5,12 +5,12 @@ Simple value
 Check simple value
 ------------------
 
-Contract can validate simple value. 
+PyCont can validate simple value. 
 All Template validators you can read in `Trafaret dock`_
 
 .. code-block:: python
 
-    >>> from contract import Template, Contract
+    >>> from pycont import Template, Contract
     >>> import trafaret as t
     >>> contract = Contract(Template(t.Int()))
     >>> print(contract(42))
@@ -27,7 +27,7 @@ You can set a default value used ``Template.default``. This value will be return
 
 .. code-block:: python
 
-    >>> from contract import Template, Contract
+    >>> from pycont import Template, Contract
     >>> import trafaret as t
     >>> contract = Contract(Template(t.Int(), default=0))
     >>> print(contract(42))

@@ -14,7 +14,7 @@ class Template():
             The default value returned if the data is invalid
             The default value type mast be valid for the template object
 
-        >>> from contract import Contract, Template
+        >>> from pycont import Contract, Template
         >>> import trafaret as t
         >>> contract = Contract(Template(t.Int()))
     """

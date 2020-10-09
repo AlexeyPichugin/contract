@@ -1,4 +1,4 @@
-from contract import Contract, Template
+from pycont import Contract, Template
 
 import unittest
 import trafaret as t

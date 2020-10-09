@@ -7,13 +7,13 @@ Installation
 Stable release
 --------------
 
-To install contract, run this command in your terminal:
+To install pycont, run this command in your terminal:
 
 .. code-block:: console
 
-    $ pip install contract
+    $ pip install pycont
 
-This is the preferred method to install contract, as it will always install the most recent stable release.
+This is the preferred method to install pycont, as it will always install the most recent stable release.
 
 If you don't have `pip`_ installed, this `Python installation guide`_ can guide
 you through the process.
@@ -25,13 +25,13 @@ you through the process.
 From sources
 ------------
 
-The sources for contract can be downloaded from the `Github repo`_.
+The sources for pycont can be downloaded from the `Github repo`_.
 
 You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone https://github.com/AlexeyPichugin/contract
+    $ git clone https://github.com/AlexeyPichugin/pycont
 
 
 Once you have a copy of the source, you can install it with:
@@ -41,4 +41,4 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/AlexeyPichugin/contract
+.. _Github repo: https://github.com/AlexeyPichugin/pycont

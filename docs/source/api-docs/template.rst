@@ -1,6 +1,6 @@
-contract.Template
+pycont.Template
 =================
 
-.. automodule:: contract.template
+.. automodule:: pycont.template
     :members:
     :exclude-members: template, default

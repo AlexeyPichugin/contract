@@ -1,9 +1,9 @@
-.. contract documentation master file, created by
+.. pycont documentation master file, created by
    sphinx-quickstart on Fri Oct  9 18:05:42 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to contract's documentation!
+Welcome to pycont's documentation!
 ====================================
 
 .. toctree::

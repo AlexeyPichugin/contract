@@ -8,7 +8,7 @@ If you set in ``Contract`` list of one ``Template`` you can validate all types i
 
 .. code-block:: python
 
-    >>> from contract import Template, Contract
+    >>> from pycont import Template, Contract
     >>> import trafaret as t
     >>> contract = Contract([Template(t.Int())])
     >>> print(contract([42]))
@@ -26,7 +26,7 @@ If set default value you can change all invalid element to this
 
 .. code-block:: python
 
-    >>> from contract import Template, Contract
+    >>> from pycont import Template, Contract
     >>> import trafaret as t
 
     >>> template = Template(t.Int(), default=0)
@@ -42,7 +42,7 @@ If one of the elements is invalid or the length does not match, throw a ValueErr
 
 .. code-block:: python
 
-    >>> from contract import Template, Contract
+    >>> from pycont import Template, Contract
     >>> import trafaret as t
     >>> contract = Contract([
     ...  Template(t.Int()),

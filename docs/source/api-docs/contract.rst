@@ -1,7 +1,7 @@
-contract.Contract
+pycont.Contract
 =================
 
-.. automodule:: contract.contract
+.. automodule:: pycont.contract
     :members:
     :undoc-members:
     :special-members: __call__

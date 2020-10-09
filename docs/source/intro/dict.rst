@@ -8,7 +8,7 @@ You can create dict tempalte. Dict template must be ``Dict[str, Template]``.
 
 .. code-block:: python
 
-    >>> from contract import Template, Contract
+    >>> from pycont import Template, Contract
     >>> import trafaret as t
 
     >>> contract = Contract(Template(t.Int(), default=42))
@@ -34,7 +34,7 @@ If the key is not set in the data, and the template has a default value, then th
 
 .. code-block:: python
 
-    >>> from contract import Template, Contract
+    >>> from pycont import Template, Contract
     >>> import trafaret as t
 
     >>> contract = Contract({

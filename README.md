@@ -1,26 +1,26 @@
-# Contract
+# PyCont
 [![Travis](https://img.shields.io/travis/numpy/numpy/master.svg?label=Travis%20CI)](
-    https://travis-ci.org/github/AlexeyPichugin/contract)
+    https://travis-ci.org/github/AlexeyPichugin/pycont)
 [![codecov](https://codecov.io/gh/numpy/numpy/branch/master/graph/badge.svg)](
-    https://codecov.io/gh/AlexeyPichugin/contract)
-[![Documentation Status](https://readthedocs.org/projects/contract/badge/?version=latest)](
-  https://contract.readthedocs.io/en/latest/?badge=latest)
+    https://codecov.io/gh/AlexeyPichugin/pycont)
+[![Documentation Status](https://readthedocs.org/projects/pycont/badge/?version=latest)](
+  https://pycont.readthedocs.io/en/latest/?badge=latest)
 
 Validate and genereate pythpon objects from templates. 
 Library is powered by [Trafaret](https://github.com/Deepwalker/trafaret) and helps to validate and genereate data from template.
 
 # Documentation
-https://contract.readthedocs.io/en/latest/index.html
+https://pycont.readthedocs.io/en/latest/index.html
 
 ## Usage
 ```sh
-pip install contract
+pip install pycont
 ```
 
 
 ### Simple data template
 ```python
->>> from contract import Template, Contract
+>>> from pycont import Template, Contract
 >>> import trafaret as t
 >>> contract = Contract(Template(t.Int()))
 >>> print(contract(42))
@@ -33,7 +33,7 @@ ValueError: Invalid value: value can't be converted to int
 
 ### Simple list template
 ```python
->>> from contract import Template, Contract
+>>> from pycont import Template, Contract
 >>> import trafaret as t
 >>> contract = Contract([
 ...  Template(t.Int())
@@ -50,7 +50,7 @@ ValueError: Invalid value: value can't be converted to int
 
 ### Static list template
 ```python
->>> from contract import Template, Contract
+>>> from pycont import Template, Contract
 >>> import trafaret as t
 >>> contract = Contract([
 ...  Template(t.Int()),
@@ -63,7 +63,7 @@ ValueError: Invalid value: value can't be converted to int
 
 ### Dict template
 ```python
->>> from contract import Template, Contract
+>>> from pycont import Template, Contract
 >>> import trafaret as t
 
 >>> contract = Contract(Template(t.Int(), default=42))
@@ -80,10 +80,10 @@ ValueError: Invalid value: value can't be converted to int
 ```
 
 ### Deafult value
-`contract.Template` contains an optional argument `default` (the default type must be valid to Tremplate checker). If the argument is set, then if the check fails, this value will be returned.
+`pycont.Template` contains an optional argument `default` (the default type must be valid to Tremplate checker). If the argument is set, then if the check fails, this value will be returned.
 
 ```python
->>> from contract import Template, Contract
+>>> from pycont import Template, Contract
 >>> import trafaret as t
 
 >>> contract = Contract({
