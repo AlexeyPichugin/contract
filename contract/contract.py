@@ -8,19 +8,20 @@ class Contract:
     Contract class contains template to validate and generate object if data is valid
 
     Args:
-        template Union[Template, List[Template], Dict[str, Template]]:
-            Template object or list of Templates or dict of Templates
+    - template Union[Template, List[Template], Dict[str, Template]]:
+        Template object or list of Templates or dict of Templates
+        
     Raises:
-        ValueError if template is not valid
+    - ValueError if template is not valid
 
     Simple value validation and generate
-    >>> from contract import Contract, Template
-    >>> import trafaret as t
-    >>> contract = Contract(Template(t.Int()))
-    >>> print(contract(42))
-    42
-    >>> print(contract('test'))
-    ValueError: invalid literal for int() with base 10: 'test'
+        >>> from contract import Contract, Template
+        >>> import trafaret as t
+        >>> contract = Contract(Template(t.Int()))
+        >>> print(contract(42))
+        42
+        >>> print(contract('test'))
+        ValueError: invalid literal for int() with base 10: 'test'
     """
     def __init__(
         self,
@@ -137,8 +138,10 @@ class Contract:
 
         Args:
             data Any: data for validation
+
         Return:
             Any: data if data is valid
+
         Raises:
             ValueError if data is not valid
 

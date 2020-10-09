@@ -80,7 +80,3 @@ ValueError: Invalid value: value can't be converted to int
 >>> print(contract({'id': 1, 'key': None}))  # key 'value' is not set
 {'id': 1, 'value': 'None'}
 ```
-
-Read The Docs hosted documentation http://trafaret.readthedocs.org/en/latest/ or look to the `docs/intro.rst` for start.
-
-
