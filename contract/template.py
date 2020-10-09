@@ -75,7 +75,7 @@ class Template():
     def default(self, default: Any) -> None:
         """
         Validate and set new default value
-        
+
         Args:
             default Any:
                 The default value returned if the data is invalid

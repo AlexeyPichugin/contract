@@ -7,7 +7,7 @@ class TestGenerators(unittest.TestCase):
     def test_simple_value(self):
         template = Template(t.Int())
         contract = Contract(template)
-        result = contract(42)
+        result = contract.__call__(42)
         self.assertEqual(result, 42)
 
         with self.assertRaises(ValueError):

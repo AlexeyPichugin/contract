@@ -9,3 +9,4 @@ dist/
 *env
 .vscode
 coverage.xml
+htmlcov/
