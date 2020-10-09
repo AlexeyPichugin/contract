@@ -1,14 +1,18 @@
 from setuptools import setup, find_packages
-import contract
+import re
 
 with open('requirements.txt') as f:
     required = f.read().splitlines()
+
+pattern = re.compile(r'__version__\s=\s[\"\'](\d*.\d*.\d*)[\"\']')
+with open('contract/__init__.py') as f:
+    version = pattern.findall(f.read())[0]
 
 setupconf = dict(
     name='contract',
     url='https://github.com/AlexeyPichugin/contract',
     license='MIT License',
-    version=contract.__version__,
+    version=version,
     author='Alexey Pichugin',
     author_email="a.o.pichugin@outlook.com",
     description='Validate and generate data from templates',
