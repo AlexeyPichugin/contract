@@ -60,10 +60,15 @@ class AsyncContract(Contract):
                 if key in data.keys():
                     result[key] = await self._check(sub_template, data[key])
                 else:
-                    if sub_template.default is not None:
-                        result[key] = sub_template.default
-                    else:
-                        raise ValueError(f'Key "{key}" not set')
+                    if key not in self.optional_keys:
+                        if isinstance(sub_template, Template):
+                            if sub_template.default is not None:
+                                result[key] = sub_template.default
+                            else:
+                                if not sub_template.optional:
+                                    raise ValueError(f'Key "{key}" not set')
+                        else:
+                            raise ValueError(f'Key "{key}" not set')
             return result
         try:
             await template.check(data)
@@ -87,8 +92,11 @@ class AsyncContract(Contract):
         Raises:
             ValueError if data is not valid
         """
-        try:
-            result = await self._check(self.template, data)
-            return result
-        except Exception as e:
-            raise ValueError(f"Invalid value: {e}")
+        errors = []
+        for template in self._templates:
+            try:
+                result = await self._check(template, data)
+                return result
+            except Exception as e:
+                errors.append(e)
+        raise ValueError(f"Invalid value: {errors}")

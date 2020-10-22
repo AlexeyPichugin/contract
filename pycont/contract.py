@@ -1,6 +1,9 @@
-from typing import Any, Union, List, Dict
+from typing import Any, Union, List, Dict, TypeVar, Optional
 from trafaret import DataError
 from pycont.template import Template
+
+
+T = TypeVar('Contract')
 
 
 class Contract:
@@ -10,6 +13,9 @@ class Contract:
     Args:
     - template Union[Template, List[Template], Dict[str, Template]]:
         Template object or list of Templates or dict of Templates
+    - optional_keys Optional[List[str]] = None
+        Used only in dictionary contract
+        The check function does not raise an error if the key is not set.
 
     Raises:
     - ValueError if template is not valid
@@ -25,10 +31,16 @@ class Contract:
     """
     def __init__(
         self,
-        template: Union[Template, List[Template], Dict[str, Template]]
+        template: Union[Template, List[Template], Dict[str, Template]],
+        optional_keys: Optional[List[str]] = None,
     ):
         self._validate(template)
-        self._template = template
+        self._templates = [template]
+        self.optional_keys = optional_keys or []
+
+    def __or__(self, other: T) -> T:
+        self._templates = self._templates + other._templates
+        return self
 
     template = property()
 
@@ -37,9 +49,9 @@ class Contract:
         """
         Get current template value
         Return:
-            Current template
+            Current template or list of tempalates
         """
-        return self._template
+        return self._templates[0] if len(self._templates) == 1 else self._templates[0]
 
     @template.setter
     def template(
@@ -56,7 +68,7 @@ class Contract:
             ValueError if template is not valid
         """
         self._validate(template)
-        self._template = template
+        self._templates = [template]
 
     def _validate(
         self,
@@ -118,10 +130,15 @@ class Contract:
                 if key in data.keys():
                     result[key] = self._check(sub_template, data[key])
                 else:
-                    if sub_template.default is not None:
-                        result[key] = sub_template.default
-                    else:
-                        raise ValueError(f'Key "{key}" not set')
+                    if key not in self.optional_keys:
+                        if isinstance(sub_template, Template):
+                            if sub_template.default is not None:
+                                result[key] = sub_template.default
+                            else:
+                                if not sub_template.optional:
+                                    raise ValueError(f'Key "{key}" not set')
+                        else:
+                            raise ValueError(f'Key "{key}" not set')
             return result
         try:
             template.check(data)
@@ -145,8 +162,11 @@ class Contract:
         Raises:
             ValueError if data is not valid
         """
-        try:
-            result = self._check(self.template, data)
-            return result
-        except Exception as e:
-            raise ValueError(f"Invalid value: {e}")
+        errors = []
+        for template in self._templates:
+            try:
+                result = self._check(template, data)
+                return result
+            except Exception as e:
+                errors.append(e)
+        raise ValueError(f"Invalid value: {errors}")
