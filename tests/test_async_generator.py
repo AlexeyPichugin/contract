@@ -220,3 +220,31 @@ class TestGenerators(unittest.TestCase):
         del data['optional']
         result = self.loop.run_until_complete(contract(data))
         self.assertEqual(result, data)
+
+    def test_complex_dict_value(self):
+        contract = AsyncContract({
+            'key': AsyncTemplate(t.Int()),
+            'value': AsyncTemplate(t.String()),
+            'optional': AsyncTemplate(t.String(), optional=True),
+            'property': [AsyncTemplate(t.String())],
+            'optional_property': [AsyncTemplate(t.String(), optional=True)],
+            'objects': [{'id': AsyncTemplate(t.Int()), 'val': AsyncTemplate(t.String())}],
+        }, optional_keys=['optional_property'])
+        data = {
+            'key': 1,
+            'value': 'test',
+            'optional': 'test',
+            'property': ['A', 'B', 'C'],
+            'optional_property': ['A', 'B', 'C'],
+            'objects': [{'id': 1, 'val': 'test'}, {'id': 2, 'val': 'test'}],
+        }
+        result = self.loop.run_until_complete(contract(data))
+        self.assertEqual(result, data)
+        del data['optional_property']
+        del data['optional']
+        result = self.loop.run_until_complete(contract(data))
+        self.assertEqual(result, data)
+
+        del data['objects']
+        with self.assertRaises(ValueError):
+            result = self.loop.run_until_complete(contract(data))

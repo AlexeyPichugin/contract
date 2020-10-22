@@ -207,3 +207,31 @@ class TestGenerators(unittest.TestCase):
         del data['optional']
         result = contract(data)
         self.assertEqual(result, data)
+
+    def test_complex_dict_value(self):
+        contract = Contract({
+            'key': Template(t.Int()),
+            'value': Template(t.String()),
+            'optional': Template(t.String(), optional=True),
+            'property': [Template(t.String())],
+            'optional_property': [Template(t.String(), optional=True)],
+            'objects': [{'id': Template(t.Int()), 'val': Template(t.String())}],
+        }, optional_keys=['optional_property'])
+        data = {
+            'key': 1,
+            'value': 'test',
+            'optional': 'test',
+            'property': ['A', 'B', 'C'],
+            'optional_property': ['A', 'B', 'C'],
+            'objects': [{'id': 1, 'val': 'test'}, {'id': 2, 'val': 'test'}],
+        }
+        result = contract(data)
+        self.assertEqual(result, data)
+        del data['optional_property']
+        del data['optional']
+        result = contract(data)
+        self.assertEqual(result, data)
+
+        del data['objects']
+        with self.assertRaises(ValueError):
+            result = contract(data)
