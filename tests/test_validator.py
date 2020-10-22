@@ -1,4 +1,4 @@
-from pycont import Contract, Template
+from pycont import Contract, Template, TemplateError
 
 import unittest
 import trafaret as t
@@ -11,7 +11,7 @@ class TestValidator(unittest.TestCase):
 
         trafaret = t.String()
         template = Template(trafaret)
-        self.assertEqual(template.template, trafaret)
+        self.assertEqual(template.template, [trafaret])
         template.check('test')
         with self.assertRaises(ValueError):
             template.check(42)
@@ -109,3 +109,27 @@ class TestValidator(unittest.TestCase):
         }
         with self.assertRaises(TypeError):
             contract = Contract(dict_t)
+
+    def test_binary_templates(self):
+        tempalte_1 = Template(t.Int())
+        tempalte_2 = Template(t.String())
+        contract = Contract(tempalte_1 | tempalte_2)
+        result = contract(42)
+        self.assertEqual(result, 42)
+        result = contract('test')
+        self.assertEqual(result, 'test')
+        with self.assertRaises(ValueError):
+            result = contract([123])
+
+        tempalte_1 = Template(t.Int(), default=42)
+        tempalte_2 = Template(t.String(), default='Test')
+        with self.assertRaises(TemplateError):
+            tempalte = tempalte_1 | tempalte_2
+
+        tempalte_1 = Template(t.Int(), default=42)
+        tempalte_2 = Template(t.String())
+        tempalte = tempalte_1 | tempalte_2  # noqa
+
+        tempalte_1 = Template(t.Int())
+        tempalte_2 = Template(t.String(), default='Test')
+        tempalte = tempalte_1 | tempalte_2  # noqa

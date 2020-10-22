@@ -1,6 +1,9 @@
-from typing import Any, Union, List, Dict
+from typing import Any, Union, List, Dict, TypeVar
 from trafaret import DataError
 from pycont.template import Template
+
+
+T = TypeVar('Contract')
 
 
 class Contract:
@@ -28,7 +31,11 @@ class Contract:
         template: Union[Template, List[Template], Dict[str, Template]]
     ):
         self._validate(template)
-        self._template = template
+        self._templates = [template]
+
+    def __or__(self, other: T) -> T:
+        self._templates = self._templates + other._templates
+        return self
 
     template = property()
 
@@ -37,9 +44,9 @@ class Contract:
         """
         Get current template value
         Return:
-            Current template
+            Current template or list of tempalates
         """
-        return self._template
+        return self._templates[0] if len(self._templates) == 1 else self._templates[0]
 
     @template.setter
     def template(
@@ -56,7 +63,7 @@ class Contract:
             ValueError if template is not valid
         """
         self._validate(template)
-        self._template = template
+        self._templates = [template]
 
     def _validate(
         self,
@@ -121,7 +128,8 @@ class Contract:
                     if sub_template.default is not None:
                         result[key] = sub_template.default
                     else:
-                        raise ValueError(f'Key "{key}" not set')
+                        if not sub_template.optional:
+                            raise ValueError(f'Key "{key}" not set')
             return result
         try:
             template.check(data)
@@ -145,8 +153,11 @@ class Contract:
         Raises:
             ValueError if data is not valid
         """
-        try:
-            result = self._check(self.template, data)
-            return result
-        except Exception as e:
-            raise ValueError(f"Invalid value: {e}")
+        errors = []
+        for template in self._templates:
+            try:
+                result = self._check(template, data)
+                return result
+            except Exception as e:
+                errors.append(e)
+        raise ValueError(f"Invalid value: {errors}")

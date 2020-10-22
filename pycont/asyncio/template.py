@@ -30,7 +30,12 @@ class AsyncTemplate(Template):
         """
         if self._template is None:
             raise ValueError("Template not set")
-        try:
-            await self._template.async_check(value)
-        except DataError as e:
-            raise e
+        errors = []
+        for template in self._template:
+            try:
+                await template.async_check(value)
+            except DataError as e:
+                errors.append(e.error)
+            else:
+                return
+        raise DataError(error='\n'.join(errors))

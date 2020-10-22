@@ -1,5 +1,12 @@
 from trafaret import Trafaret, DataError
-from typing import Any, Optional
+from typing import Any, Optional, Union, List, TypeVar
+
+
+T = TypeVar('Template')
+
+
+class TemplateError(Exception):
+    pass
 
 
 class Template():
@@ -13,18 +20,34 @@ class Template():
         default Optional[Any] = None:
             The default value returned if the data is invalid
             The default value type mast be valid for the template object
+        optional Optional[bool] = False:
+            Used only in dictionary contract
+            If True, the check function does not raise an error if the key is not set.
 
         >>> from pycont import Contract, Template
         >>> import trafaret as t
         >>> contract = Contract(Template(t.Int()))
     """
-    def __init__(self, template: Trafaret, default: Optional[Any] = None):
+    def __init__(
+        self,
+        template: Union[Trafaret, List[Trafaret]],
+        default: Optional[Any] = None,
+        optional: Optional[bool] = False,
+    ):
         self._validate_template(template)
-        self._template = template
+        self._template = [template] if isinstance(template, Trafaret) else template
+        self.optional = optional
 
         if default is not None:
             self._validate_default(default)
         self._default = default
+
+    def __or__(self, other: T):
+        if self.default is not None and other.default is not None:
+            raise TemplateError('Both templates cannot have default values')
+        self.template = self.template + other.template
+        self.default = self.default or other.default
+        return self
 
     template = property()
 
@@ -39,14 +62,14 @@ class Template():
         return self._template
 
     @template.setter
-    def template(self, template: Trafaret) -> None:
+    def template(self, template: Union[Trafaret, List[Trafaret]]) -> None:
         """
         Validate new trafaret object
         Args:
             template: trafarer.Trafaret objects or subclass
         """
         self._validate_template(template)
-        self._template = template
+        self._template = [template] if isinstance(template, Trafaret) else template
 
     @template.deleter
     def template(self):
@@ -60,7 +83,12 @@ class Template():
         Check if template is valid for work
         """
         if not isinstance(template, Trafaret):
-            raise ValueError(f'Template type must be trafaret.Trafaret, not {type(template)}')
+            try:
+                for tmp in template:
+                    if not isinstance(tmp, Trafaret):
+                        raise ValueError(f'Template type must be trafaret.Trafaret, not {type(template)}')
+            except Exception:
+                raise ValueError(f'Template type must be trafaret.Trafaret, not {type(template)}')
 
     default = property()
 
@@ -98,9 +126,16 @@ class Template():
             ValueError if template is not set
             trafaret.DataError if value is not valid
         """
-        if self._template is not None:
-            self._template.check(default)
+        if default is None:
             return
+        if self._template is not None:
+            for template in self._template:
+                try:
+                    template.check(default)
+                except DataError:
+                    pass
+                else:
+                    return
         raise ValueError("Template not set")
 
     def check(self, value: Any):
@@ -113,7 +148,12 @@ class Template():
         """
         if self._template is None:
             raise ValueError("Template not set")
-        try:
-            self._template.check(value)
-        except DataError as e:
-            raise e
+        errors = []
+        for template in self._template:
+            try:
+                template.check(value)
+            except DataError as e:
+                errors.append(e.error)
+            else:
+                return
+        raise DataError(error='\n'.join(errors))
