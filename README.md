@@ -1,6 +1,6 @@
 # PyCont
-[![Travis](https://img.shields.io/travis/numpy/numpy/master.svg?label=Travis%20CI)](
-    https://travis-ci.org/github/AlexeyPichugin/pycont)
+[![Travis](https://img.shields.io/travis/com/AlexeyPichugin/pycont)](
+    https://www.travis-ci.com/github/AlexeyPichugin/pycont)
 [![codecov](https://codecov.io/gh/numpy/numpy/branch/master/graph/badge.svg)](
     https://codecov.io/gh/AlexeyPichugin/pycont)
 [![Documentation Status](https://readthedocs.org/projects/pycont/badge/?version=latest)](
